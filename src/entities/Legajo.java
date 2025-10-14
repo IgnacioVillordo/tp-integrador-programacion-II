@@ -3,7 +3,7 @@ package entities;
 import java.time.LocalDate;
 
 public class Legajo {
-    private int id;
+    private Long id;
     private boolean eliminado;
     private String nroLegajo; // NOT NULL, UNIQUE, máx. 20
     private String categoria; // máx. 30
@@ -11,7 +11,7 @@ public class Legajo {
     private LocalDate fechaAlta;
     private String observaciones; // máx. 255
 
-    public Legajo(int id, boolean eliminado, String nroLegajo, String categoria, Estado estado, LocalDate fechaAlta, String observaciones) {
+    public Legajo(Long id, boolean eliminado, String nroLegajo, String categoria, Estado estado, LocalDate fechaAlta, String observaciones) {
         this.setId(id);
         this.setEliminado(eliminado);
         this.setNroLegajo(nroLegajo);
@@ -21,7 +21,7 @@ public class Legajo {
         this.setObservaciones(observaciones);
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         if (id > 0) {
             this.id = id;
             return;
@@ -59,6 +59,7 @@ public class Legajo {
     public void setFechaAlta(LocalDate fechaAlta) {
         if (!fechaAlta.isBefore(LocalDate.now())) {
             this.fechaAlta = fechaAlta;
+            return;
         }
         System.out.println("Fecha alta invalida!");
     }
@@ -66,6 +67,7 @@ public class Legajo {
     public void setObservaciones(String observaciones) {
         if (observaciones.length() <= 255) {
             this.observaciones = observaciones;
+            return;
         }
         System.out.println("Observaciones invalida!");
     }
@@ -83,7 +85,7 @@ public class Legajo {
                 '}';
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
