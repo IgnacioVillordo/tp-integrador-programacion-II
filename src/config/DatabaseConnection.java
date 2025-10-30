@@ -10,7 +10,7 @@ public class DatabaseConnection {
     private static final HikariDataSource ds;
 
     static {
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/db");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/gestionempleados");
         config.setUsername("root");
         config.setPassword("secreto");
         config.setMaximumPoolSize(10);
