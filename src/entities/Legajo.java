@@ -3,17 +3,19 @@ package entities;
 import java.time.LocalDate;
 
 public class Legajo {
-    private Long id;
-    private boolean eliminado;
     private String nroLegajo; // NOT NULL, UNIQUE, máx. 20
     private String categoria; // máx. 30
     private Estado estado; // NOT NULL
     private LocalDate fechaAlta;
     private String observaciones; // máx. 255
 
-    public Legajo(Long id, boolean eliminado, String nroLegajo, String categoria, Estado estado, LocalDate fechaAlta, String observaciones) {
-        this.setId(id);
-        this.setEliminado(eliminado);
+    public Legajo(
+            String nroLegajo,
+            String categoria,
+            Estado estado,
+            LocalDate fechaAlta,
+            String observaciones
+    ) {
         this.setNroLegajo(nroLegajo);
         this.setCategoria(categoria);
         this.setEstado(estado);
@@ -21,24 +23,12 @@ public class Legajo {
         this.setObservaciones(observaciones);
     }
 
-    public void setId(Long id) {
-        if (id > 0) {
-            this.id = id;
-            return;
-        }
-        System.out.println("ID invalido!");
-    }
-
-    public void setEliminado(boolean eliminado) {
-        this.eliminado = eliminado;
-    }
-
     public void setNroLegajo(String nroLegajo) {
         if (nroLegajo != null && !nroLegajo.isEmpty() && nroLegajo.length() <= 20) {
             this.nroLegajo = nroLegajo;
             return;
         }
-        System.out.println("Nro legajo invalido!");
+        throw new IllegalArgumentException("Numero de legajo invalido. No puede estar vacio ni tener mas de 20 caracteres");
     }
 
     public void setCategoria(String categoria) {
@@ -46,14 +36,14 @@ public class Legajo {
             this.categoria = categoria;
             return;
         }
-        System.out.println("Categoria invalida!");
+        throw new IllegalArgumentException("La categoria es invalida. No puede estar vacia ni tener mas de 30 caracteres");
     }
 
     public void setEstado(Estado estado) {
         if (estado != null) {
             this.estado = estado;
         }
-        System.out.println("Estado invalido!");
+        throw new IllegalArgumentException("Estado invalido");
     }
 
     public void setFechaAlta(LocalDate fechaAlta) {
@@ -61,7 +51,7 @@ public class Legajo {
             this.fechaAlta = fechaAlta;
             return;
         }
-        System.out.println("Fecha alta invalida!");
+        throw new IllegalArgumentException("La fecha no puede ser anterior a la actual");
     }
 
     public void setObservaciones(String observaciones) {
@@ -69,28 +59,18 @@ public class Legajo {
             this.observaciones = observaciones;
             return;
         }
-        System.out.println("Observaciones invalida!");
+        throw new IllegalArgumentException("Las observaciones no pueden tener mas de 255 caracteres");
     }
 
     @Override
     public String toString() {
         return "Legajo{" + "\n" +
-                "  id=" + id + ",\n" +
-                "  eliminado=" + eliminado + ",\n" +
                 "  nroLegajo='" + nroLegajo + '\'' + ",\n" +
                 "  categoria='" + categoria + '\'' + ",\n" +
                 "  estado=" + estado + ",\n" +
                 "  fechaAlta=" + fechaAlta + ",\n" +
                 "  observaciones='" + observaciones + '\'' + ",\n" +
                 '}';
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public boolean isEliminado() {
-        return eliminado;
     }
 
     public String getNroLegajo() {
