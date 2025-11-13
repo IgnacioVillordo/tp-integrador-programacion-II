@@ -40,19 +40,20 @@ public class Legajo {
     }
 
     public void setEstado(Estado estado) {
-        if (estado != null) {
-            this.estado = estado;
-        }
-        throw new IllegalArgumentException("Estado invalido");
+    if (estado != null) {
+        this.estado = estado;
+        return; 
     }
+    throw new IllegalArgumentException("Estado invalido");
+}
 
-    public void setFechaAlta(LocalDate fechaAlta) {
-        if (!fechaAlta.isBefore(LocalDate.now())) {
-            this.fechaAlta = fechaAlta;
-            return;
-        }
-        throw new IllegalArgumentException("La fecha no puede ser anterior a la actual");
+public void setFechaAlta(LocalDate fechaAlta) {
+    if (fechaAlta != null && !fechaAlta.isAfter(LocalDate.now())) {
+        this.fechaAlta = fechaAlta;
+        return;
     }
+    throw new IllegalArgumentException("La fecha no puede ser futura ni nula");
+}
 
     public void setObservaciones(String observaciones) {
         if (observaciones.length() <= 255) {

@@ -66,13 +66,13 @@ public class Empleado {
         throw new IllegalArgumentException("Email invalido");
     }
 
-    public void setFechaIngreso(LocalDate fechaIngreso) {
-        if (!fechaIngreso.isBefore(LocalDate.now())) {
-            this.fechaIngreso = fechaIngreso;
-            return;
-        }
-        throw new IllegalArgumentException("Fecha invalida");
+   public void setFechaIngreso(LocalDate fechaIngreso) {
+    if (fechaIngreso != null && !fechaIngreso.isAfter(LocalDate.now())) {
+        this.fechaIngreso = fechaIngreso;
+        return;
     }
+    throw new IllegalArgumentException("Fecha invalida: no puede ser futura.");
+}
 
     public void setArea(String area) {
         if (area.length() <= 50) {
