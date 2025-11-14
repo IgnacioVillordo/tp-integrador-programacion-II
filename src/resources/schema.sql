@@ -29,8 +29,8 @@ CREATE TABLE empleados
     email        VARCHAR(120),
     fechaIngreso DATE    DEFAULT (NOW()),
     area         VARCHAR(50),
-    nroLegajo    VARCHAR(20),
+    id_legajo    VARCHAR(20),
     eliminado    BOOLEAN DEFAULT FALSE,
 
-    FOREIGN KEY (id) REFERENCES legajos (id)
+    FOREIGN KEY (id_legajo) REFERENCES legajos (id)
 );
