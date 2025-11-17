@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS legajos;
 -- Creación tabla legajos
 CREATE TABLE legajos
 (
-    id                NOT NULL UNIQUE PRIMARY KEY,
+    id            INT NOT NULL UNIQUE PRIMARY KEY,
     nroLegajo     VARCHAR(20),
     categoria     VARCHAR(30),
     estado        ENUM ('ACTIVO','INACTIVO') NOT NULL,
@@ -22,14 +22,14 @@ DROP TABLE IF EXISTS empleados;
 -- Creación tabla empleados
 CREATE TABLE empleados
 (
-    id INT PRIMARY KEY AUTO_INCREMENTAL,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     dni          VARCHAR(15)        NOT NULL,
     nombre       VARCHAR(80)        NOT NULL,
     apellido     VARCHAR(80)        NOT NULL,
     email        VARCHAR(120),
     fechaIngreso DATE    DEFAULT (NOW()),
     area         VARCHAR(50),
-    id_legajo    VARCHAR(20),
+    id_legajo    INT,
     eliminado    BOOLEAN DEFAULT FALSE,
 
     FOREIGN KEY (id_legajo) REFERENCES legajos (id)
