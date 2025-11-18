@@ -6,6 +6,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public interface EmpleadoLegajoDao {
-    void setLegajo(String dni, Legajo legajo) throws SQLException;
-    void setLegajoTx(String dni, Legajo legajo, Connection conn) throws SQLException;
+    void setLegajo(int id_empleado, Legajo legajo) throws SQLException;
+    void setLegajoTx(int id_empleado, Legajo legajo, Connection conn) throws SQLException;
 }

@@ -4,19 +4,17 @@ import config.DatabaseConnection;
 import entities.Empleado;
 import entities.Legajo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDao {
 
     @Override
-    public void save(Empleado entity) throws SQLException {
+    public int save(Empleado entity) throws SQLException {
+        int generatedId = -1;
         String sql = "INSERT INTO empleados (dni, nombre, apellido, email, fechaIngreso, area) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, entity.getDni());
             stmt.setString(2, entity.getNombre());
             stmt.setString(3, entity.getApellido());
@@ -25,7 +23,13 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
             stmt.setString(6, entity.getArea());
 
             stmt.executeUpdate();
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    generatedId = rs.getInt(1);
+                }
+            }
         }
+        return generatedId;
     }
 
     @Override
@@ -45,17 +49,18 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
     }
 
     @Override
-    public void delete(String dni) throws SQLException {
-        String sql = "DELETE FROM empleados WHERE dni=?";
+    public void delete(int id) throws SQLException {
+        String sql = "UPDATE empleados SET eliminado=TRUE WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, dni);
+            stmt.setInt(1, id);
         }
     }
 
     @Override
-    public void saveTx(Empleado entity, Connection conn) throws SQLException {
+    public int saveTx(Empleado entity, Connection conn) throws SQLException {
+        int generatedId = -1;
         String sql = "INSERT INTO empleados (dni, nombre, apellido, email, fechaIngreso, area) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, entity.getDni());
             stmt.setString(2, entity.getNombre());
             stmt.setString(3, entity.getApellido());
@@ -64,7 +69,13 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
             stmt.setString(6, entity.getArea());
 
             stmt.executeUpdate();
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    generatedId = rs.getInt(1);
+                }
+            }
         }
+        return generatedId;
     }
 
     @Override
@@ -84,18 +95,18 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
     }
 
     @Override
-    public void delteTx(String dni, Connection conn) throws SQLException {
-        String sql = "DELETE FROM empleados WHERE dni=?";
+    public void delteTx(int id, Connection conn) throws SQLException {
+        String sql = "UPDATE empleados SET eliminado=TRUE WHERE id=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, dni);
+            stmt.setInt(1, id);
         }
     }
 
     @Override
-    public Empleado getById(String dni) throws SQLException {
-        String sql = "SELECT * FROM empleados WHERE id = ?";
+    public Empleado getById(int id) throws SQLException {
+        String sql = "SELECT * FROM empleados WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
-            stmt.setString(1, dni);
+            stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new Empleado(
@@ -135,22 +146,22 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
     }
 
     @Override
-    public void setLegajo(String dni, Legajo legajo) throws SQLException {
-        String sql = "UPDATE empleados SET legajo=? WHERE dni=?";
+    public void setLegajo(int id_empleado, Legajo legajo) throws SQLException {
+        String sql = "UPDATE empleados SET id_legajo=? WHERE id_empleado=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, legajo.getNroLegajo());
-            stmt.setString(2, dni);
+            stmt.setInt(2, id_empleado);
 
             stmt.executeQuery();
         }
     }
 
     @Override
-    public void setLegajoTx(String dni, Legajo legajo, Connection conn) throws SQLException {
-        String sql = "UPDATE empleados SET legajo=? WHERE dni=?";
+    public void setLegajoTx(int id_empleado, Legajo legajo, Connection conn) throws SQLException {
+        String sql = "UPDATE empleados SET id_legajo=? WHERE id_empleado=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, legajo.getNroLegajo());
-            stmt.setString(2, dni);
+            stmt.setInt(2, id_empleado);
 
             stmt.executeQuery();
         }

@@ -13,7 +13,8 @@ import java.util.List;
 
 public class MySQLLegajosDao implements GenericDao<Legajo> {
     @Override
-    public void save(Legajo entity) throws SQLException {
+    public int save(Legajo entity) throws SQLException {
+        int generatedId = -1;
         String sql = "INSERT INTO legajos (nroLegajo, categoria, estado, fechaAlta, observaciones) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, entity.getNroLegajo());
@@ -23,7 +24,13 @@ public class MySQLLegajosDao implements GenericDao<Legajo> {
             stmt.setString(5, entity.getObservaciones());
 
             stmt.executeUpdate();
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    generatedId =  rs.getInt(1);
+                }
+            }
         }
+        return generatedId;
     }
 
     @Override
@@ -41,15 +48,16 @@ public class MySQLLegajosDao implements GenericDao<Legajo> {
     }
 
     @Override
-    public void delete(String nroLegajo) throws SQLException {
-        String sql = "DELETE FROM legajos  WHERE nroLegajo=?";
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM legajos WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nroLegajo);
+            stmt.setInt(1, id);
         }
     }
 
     @Override
-    public void saveTx(Legajo entity, Connection conn) throws SQLException {
+    public int saveTx(Legajo entity, Connection conn) throws SQLException {
+        int generatedId = -1;
         String sql = "INSERT INTO legajos (nroLegajo, categoria, estado, fechaAlta, observaciones) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, entity.getNroLegajo());
@@ -59,7 +67,13 @@ public class MySQLLegajosDao implements GenericDao<Legajo> {
             stmt.setString(5, entity.getObservaciones());
 
             stmt.executeUpdate();
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    generatedId = rs.getInt(1);
+                }
+            }
         }
+        return generatedId;
     }
 
     @Override
@@ -77,18 +91,18 @@ public class MySQLLegajosDao implements GenericDao<Legajo> {
     }
 
     @Override
-    public void delteTx(String nroLegajo, Connection conn) throws SQLException {
-        String sql = "DELETE FROM legajos  WHERE nroLegajo=?";
+    public void delteTx(int id, Connection conn) throws SQLException {
+        String sql = "DELETE FROM legajos WHERE id=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nroLegajo);
+            stmt.setInt(1, id);
         }
     }
 
     @Override
-    public Legajo getById(String nroLegajo) throws SQLException {
-        String sql = "SELECT * FROM legajos  WHERE nroLegajo=?";
+    public Legajo getById(int id) throws SQLException {
+        String sql = "SELECT * FROM legajos WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nroLegajo);
+            stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new Legajo(
