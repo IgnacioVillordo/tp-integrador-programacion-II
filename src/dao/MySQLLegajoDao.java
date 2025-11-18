@@ -10,11 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class MySQLLegajosDao implements GenericDao<Legajo> {
+public class MySQLLegajoDao implements GenericDao<Legajo> {
     @Override
-    public int save(Legajo entity) throws SQLException {
-        int generatedId = -1;
+    public Optional<Integer> save(Legajo entity) throws SQLException {
         String sql = "INSERT INTO legajos (nroLegajo, categoria, estado, fechaAlta, observaciones) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, entity.getNroLegajo());
@@ -26,11 +26,11 @@ public class MySQLLegajosDao implements GenericDao<Legajo> {
             stmt.executeUpdate();
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    generatedId =  rs.getInt(1);
+                    return Optional.of(rs.getInt(1));
                 }
             }
         }
-        return generatedId;
+        return null;
     }
 
     @Override
@@ -56,8 +56,7 @@ public class MySQLLegajosDao implements GenericDao<Legajo> {
     }
 
     @Override
-    public int saveTx(Legajo entity, Connection conn) throws SQLException {
-        int generatedId = -1;
+    public Optional<Integer> saveTx(Legajo entity, Connection conn) throws SQLException {
         String sql = "INSERT INTO legajos (nroLegajo, categoria, estado, fechaAlta, observaciones) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, entity.getNroLegajo());
@@ -69,11 +68,11 @@ public class MySQLLegajosDao implements GenericDao<Legajo> {
             stmt.executeUpdate();
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    generatedId = rs.getInt(1);
+                    return Optional.of(rs.getInt(1));
                 }
             }
         }
-        return generatedId;
+        return null;
     }
 
     @Override

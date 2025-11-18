@@ -1,6 +1,6 @@
 package services;
 
-import dao.MySQLEmpleadosDao;
+import dao.MySQLEmpleadoDao;
 import entities.Empleado;
 import java.time.LocalDate;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class EmpleadoService {
 
-    private MySQLEmpleadosDao empleadoDao = new MySQLEmpleadosDao();
+    private MySQLEmpleadoDao empleadoDao = new MySQLEmpleadoDao();
 
     // ========================= CREAR =========================
     public void crearEmpleadoDesdeConsola(Scanner scanner) {

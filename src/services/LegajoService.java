@@ -1,6 +1,6 @@
 package services;
 
-import dao.MySQLLegajosDao;
+import dao.MySQLLegajoDao;
 import entities.Estado;
 import entities.Legajo;
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class LegajoService {
 
-    private MySQLLegajosDao legajoDao = new MySQLLegajosDao();
+    private MySQLLegajoDao legajoDao = new MySQLLegajoDao();
 
     // ========================= CREAR =========================
     public void crearLegajoDesdeConsola(Scanner scanner) {

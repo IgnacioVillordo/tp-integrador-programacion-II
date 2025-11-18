@@ -3,9 +3,10 @@ package services;
 import dao.GenericDao;
 import entities.Empleado;
 
+import java.time.LocalDate;
 import java.util.List;
 
-public class EmpleadoServiceImpl implements GenericService<Empleado>{
+public class EmpleadoServiceImpl implements GenericService<Empleado> {
     private final GenericDao<Empleado> empleadoDao;
 
     public EmpleadoServiceImpl(GenericDao<Empleado> empleadoDao) {
@@ -14,17 +15,20 @@ public class EmpleadoServiceImpl implements GenericService<Empleado>{
 
     @Override
     public void save(Empleado entity) throws Exception {
-
+        this.validateEntity(entity);
+        empleadoDao.save(entity);
     }
 
     @Override
     public void update(Empleado entity) throws Exception {
-
+        this.validateEntity(entity);
+        empleadoDao.update(entity);
     }
 
     @Override
     public void delete(int id) throws Exception {
-
+        this.validateIntegerId(id);
+        empleadoDao.delete(id);
     }
 
     @Override
@@ -44,11 +48,34 @@ public class EmpleadoServiceImpl implements GenericService<Empleado>{
 
     @Override
     public Empleado getById(int id) throws Exception {
-        return null;
+        this.validateIntegerId(id);
+        return empleadoDao.getById(id);
     }
 
     @Override
     public List<Empleado> getAll() throws Exception {
-        return List.of();
+        return empleadoDao.getAll();
+    }
+
+    private void validateEntity(Empleado entity) throws Exception {
+        if (entity.getId() < 0)
+            throw new IllegalArgumentException("El id no puede ser un nùmero negativo");
+        if (entity.getDni().trim().isEmpty() || entity.getDni() == null || entity.getDni().length() <= 16)
+            throw new IllegalArgumentException("El dni no puede estar vacìo");
+        if (entity.getNombre().trim().isEmpty() || entity.getNombre() == null || entity.getNombre().length() <= 80)
+            throw new IllegalArgumentException("El nombre no puede estar vacìo");
+        if (entity.getApellido().trim().isEmpty() || entity.getApellido() == null || entity.getNombre().length() <= 80)
+            throw new IllegalArgumentException("El apellido no puede estar vacìo");
+        if (entity.getEmail().trim().isEmpty() || !entity.getApellido().contains("@") || !entity.getEmail().contains(".") || entity.getEmail().length() <= 120)
+            throw new IllegalArgumentException("El email no puede estar vacìo, o debe contener @");
+        if (entity.getFechaIngreso() == null || entity.getFechaIngreso().isAfter(LocalDate.now()) || entity.getFechaIngreso().equals(""))
+            throw new IllegalArgumentException("La fecha de ingreso no puede estar vacia o ser anterior a la fecha actual");
+        if (entity.getArea() == null || entity.getArea().isEmpty() || entity.getArea().length() <= 50)
+            throw new IllegalArgumentException("La fecha de ingreso no puede estar vacia o ser anterior a la fecha actual");
+    }
+
+    private void validateIntegerId(int id) throws Exception {
+        if (id <= 0)
+            throw new IllegalArgumentException("El id no debe ser un numero negativo");
     }
 }

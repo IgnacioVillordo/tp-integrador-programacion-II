@@ -36,12 +36,12 @@ Detener contenedor
 docker stop tp-integrador
 ```
 
-Ejecutar phpmyadmin desde docker
+Ejecutar phpmyadmin desde docker.
+
+Nota: El contenedor de phpmyadmin necesitara un contenedor de base de datos llamado tp-integrador-programacion para ejecutarse.
 
 ```shell
-docker run --name phpmyadmin -d --link tp-integrador-programacion:db -p 8080:80 phpmyadmin
+docker run --rm --name phpmyadmin -d --link tp-integrador-programacion:db -p 8080:80 phpmyadmin
 ```
-
-El contenedor de phpmyadmin necesitara un contenedor de base de datos llamado tp-integrador-programacion.
 
 Visitar [http://localhost:8080](http://localhost:8080) e ingresar con las credenciales de la base de datos.

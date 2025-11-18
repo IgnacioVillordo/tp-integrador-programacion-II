@@ -7,12 +7,12 @@ import entities.Legajo;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDao {
+public class MySQLEmpleadoDao implements GenericDao<Empleado>, EmpleadoLegajoDao {
 
     @Override
-    public int save(Empleado entity) throws SQLException {
-        int generatedId = -1;
+    public Optional<Integer> save(Empleado entity) throws SQLException {
         String sql = "INSERT INTO empleados (dni, nombre, apellido, email, fechaIngreso, area) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, entity.getDni());
@@ -25,11 +25,11 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
             stmt.executeUpdate();
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    generatedId = rs.getInt(1);
+                    return Optional.of(rs.getInt(1));
                 }
             }
         }
-        return generatedId;
+        return null;
     }
 
     @Override
@@ -57,8 +57,7 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
     }
 
     @Override
-    public int saveTx(Empleado entity, Connection conn) throws SQLException {
-        int generatedId = -1;
+    public Optional<Integer> saveTx(Empleado entity, Connection conn) throws SQLException {
         String sql = "INSERT INTO empleados (dni, nombre, apellido, email, fechaIngreso, area) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, entity.getDni());
@@ -71,11 +70,11 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
             stmt.executeUpdate();
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    generatedId = rs.getInt(1);
+                    return Optional.of(rs.getInt(1));
                 }
             }
         }
-        return generatedId;
+        return null;
     }
 
     @Override
@@ -125,20 +124,20 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
 
     @Override
     public List<Empleado> getAll() throws SQLException {
-        String sql = "SELECT * FROM empleados";
+        String sql = "SELECT id, dni, nombre, apellido, email, fechaIngreso, area FROM empleados WHERE legajo <> TRUE";
         List<Empleado> empleados = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery();) {
             while (rs.next()) {
                 empleados.add(
-                    new Empleado(
-                        rs.getString("dni"),
-                        rs.getString("nombre"),
-                        rs.getString("apellido"),
-                        rs.getString("email"),
-                        rs.getDate("fechaIngreso").toLocalDate(),
-                        rs.getString("area"),
-                        rs.getBoolean("eliminado")
-                    )
+                        new Empleado(
+                                rs.getString("dni"),
+                                rs.getString("nombre"),
+                                rs.getString("apellido"),
+                                rs.getString("email"),
+                                rs.getDate("fechaIngreso").toLocalDate(),
+                                rs.getString("area"),
+                                rs.getBoolean("eliminado")
+                        )
                 );
             }
             return empleados;

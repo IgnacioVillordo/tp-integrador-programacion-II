@@ -3,13 +3,15 @@ package entities;
 import java.time.LocalDate;
 
 public class Empleado {
+    private int id;
+
     private String dni; // NOT NULL, UNIQUE, máx. 15
     private String nombre; // NOT NULL, máx. 80
     private String apellido; // NOT NULL, máx. 80
     private String email; // máx. 120, formato email
     private LocalDate fechaIngreso;
     private String area; // máx. 50
-    private boolean eliminado;
+    private boolean eliminado = false;
     private Legajo legajo;
 
     public Empleado(
@@ -93,6 +95,7 @@ public class Empleado {
     @Override
     public String toString() {
         return "Empleado{" + "\n" +
+                "  id='" + id + '\'' + ",\n" +
                 "  dni='" + dni + '\'' + ",\n" +
                 "  nombre='" + nombre + '\'' + ",\n" +
                 "  apellido='" + apellido + '\'' + ",\n" +
@@ -134,5 +137,9 @@ public class Empleado {
 
     public Legajo getLegajo() {
         return legajo;
+    }
+
+    public int getId() {
+        return id;
     }
 }
