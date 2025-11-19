@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MySQLLegajoDao implements GenericDao<Legajo> {
+public class MySQLLegajoDao implements LegajoDao {
     @Override
     public Optional<Integer> save(Legajo entity) throws SQLException {
         String sql = "INSERT INTO legajos (nroLegajo, categoria, estado, fechaAlta, observaciones) VALUES (?, ?, ?, ?, ?)";

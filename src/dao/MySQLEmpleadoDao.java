@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MySQLEmpleadoDao implements GenericDao<Empleado>, EmpleadoLegajoDao {
+public class MySQLEmpleadoDao implements EmpleadoDao {
 
     @Override
     public Optional<Integer> save(Empleado entity) throws SQLException {
@@ -163,6 +163,26 @@ public class MySQLEmpleadoDao implements GenericDao<Empleado>, EmpleadoLegajoDao
             stmt.setInt(2, id_empleado);
 
             stmt.executeQuery();
+        }
+    }
+
+    @Override
+    public Empleado buscarPorDni(String dni) throws SQLException {
+        String sql = "SELECT id, dni, nombre, apellido, email, fechaIngreso, area FROM empleados WHERE dni=?";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setString(1, dni);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Empleado(
+                        rs.getString("dni"),
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getString("email"),
+                        rs.getDate("fechaIngreso").toLocalDate(),
+                        rs.getString("area"),
+                        rs.getBoolean("eliminado")
+                );
+            }
         }
     }
 }

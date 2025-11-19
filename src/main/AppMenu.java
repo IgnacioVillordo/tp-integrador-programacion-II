@@ -2,13 +2,13 @@ package main;
 
 import java.util.Scanner;
 import services.EmpleadoService;
-import services.LegajoService;
+import services.LegajoServiceFacke;
 
 public class AppMenu {
 
     private Scanner scanner = new Scanner(System.in);
     private EmpleadoService empleadoService = new EmpleadoService();
-    private LegajoService legajoService = new LegajoService();
+    private LegajoServiceFacke legajoService = new LegajoServiceFacke();
 
     public void iniciar() {
         int opcion;

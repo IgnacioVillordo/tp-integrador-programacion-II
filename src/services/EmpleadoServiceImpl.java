@@ -1,15 +1,15 @@
 package services;
 
-import dao.GenericDao;
+import dao.EmpleadoDao;
 import entities.Empleado;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class EmpleadoServiceImpl implements GenericService<Empleado> {
-    private final GenericDao<Empleado> empleadoDao;
+public class EmpleadoServiceImpl implements EmpleadoService {
+    private final EmpleadoDao empleadoDao;
 
-    public EmpleadoServiceImpl(GenericDao<Empleado> empleadoDao) {
+    public EmpleadoServiceImpl(EmpleadoDao empleadoDao) {
         this.empleadoDao = empleadoDao;
     }
 
@@ -55,6 +55,11 @@ public class EmpleadoServiceImpl implements GenericService<Empleado> {
     @Override
     public List<Empleado> getAll() throws Exception {
         return empleadoDao.getAll();
+    }
+
+    @Override
+    public Empleado buscarPorDni(String dni) throws Exception {
+        return empleadoDao.buscarPorDni(dni);
     }
 
     private void validateEntity(Empleado entity) throws Exception {
