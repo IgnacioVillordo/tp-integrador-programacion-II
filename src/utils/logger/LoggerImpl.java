@@ -1,23 +1,25 @@
 package utils.logger;
 
-public class LoggerImpl implements Logger {
-    private final System sistem;
+import java.io.PrintStream;
 
-    public LoggerImpl(System sistem) {
-        this.sistem = sistem;
+public class LoggerImpl implements Logger {
+    private final PrintStream out;
+
+    public LoggerImpl(PrintStream out) {
+        this.out = out;
     }
 
     public void println(Object... values) {
         for (Object v : values) {
-            System.out.print(v);
+            out.print(v);
         }
-        System.out.println();
+        out.println();
     }
 
     @Override
     public void print(Object... values) {
         for (Object v : values) {
-            System.out.print(v);
+            out.print(v);
         }
     }
 }

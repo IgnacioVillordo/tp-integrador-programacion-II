@@ -124,7 +124,7 @@ public class MySQLEmpleadoDao implements EmpleadoDao {
 
     @Override
     public List<Empleado> getAll() throws SQLException {
-        String sql = "SELECT id, dni, nombre, apellido, email, fechaIngreso, area FROM empleados WHERE legajo <> TRUE";
+        String sql = "SELECT id, dni, nombre, apellido, email, fechaIngreso, area FROM empleados WHERE eliminado <> TRUE";
         List<Empleado> empleados = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery();) {
             while (rs.next()) {
