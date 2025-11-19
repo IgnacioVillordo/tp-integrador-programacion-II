@@ -90,18 +90,18 @@ public class EmpleadoCliInterfaceImpl implements EmpleadoCliInterface {
     @Override
     public void buscarPorId() {
         try {
-            System.out.print("Ingrese ID del empleado: ");
+            this.logger.print("Ingrese ID del empleado: ");
             int id = Integer.parseInt(this.inputReader.read());
             Empleado empleado = empleadoService.getById(id);
 
             if (empleado != null) {
-                System.out.println("✅ Empleado encontrado:");
-                System.out.println(empleado);
+                this.logger.println("✅ Empleado encontrado:");
+                this.logger.println(empleado);
             } else {
-                System.out.println("⚠️ No se encontró el empleado con ID: " + id);
+                this.logger.println("⚠️ No se encontró el empleado con ID: " + id);
             }
         } catch (Exception e) {
-            System.out.println("❌ Error al buscar empleado: " + e.getMessage());
+            this.logger.println("❌ Error al buscar empleado: " + e.getMessage());
         }
     }
 
@@ -136,7 +136,7 @@ public class EmpleadoCliInterfaceImpl implements EmpleadoCliInterface {
         try {
             this.logger.print("Ingrese el ID del empleado a eliminar: ");
             int id = Integer.parseInt(this.inputReader.read());
-            empleadoService.delete(id);
+            this.empleadoService.delete(id);
             this.logger.println("✅ Empleado eliminado correctamente.");
         } catch (Exception e) {
             this.logger.println("❌ Error al eliminar empleado: " + e.getMessage());

@@ -21,12 +21,15 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Logger logger = new LoggerImpl(System.out);
         InputReader inputReader = new InputReaderImpl(scanner, logger);
+
         EmpleadoDao empleadoDao = new MySQLEmpleadoDao();
         LegajoDao legajoDao = new MySQLLegajoDao();
+
         EmpleadoService empleadoService = new EmpleadoServiceImpl(empleadoDao);
         LegajoService legajoService = new LegajoServiceImpl(legajoDao);
         EmpleadoCliInterface empleadoCli = new EmpleadoCliInterfaceImpl(empleadoService, inputReader, logger);
         LegajoCliInterface legajoCli = new LegajoCliInterfaceImpl(legajoService, inputReader, logger);
+
         AppMenuCliInterface menuCli = new AppMenuCliInterfaceImpl(empleadoCli, legajoCli, inputReader, logger);
         menuCli.main();
     }

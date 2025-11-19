@@ -79,7 +79,7 @@ Al detener el contenedor, éste se eliminará
 Detener contenedor de la base de datos
 
 ```shell
-docker stop tp-integrador
+docker stop tp-integrador-programacion
 ```
 
 Ejecutar phpmyadmin desde docker.
