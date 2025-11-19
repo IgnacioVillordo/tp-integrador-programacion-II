@@ -117,12 +117,12 @@ public class EmpleadoCliInterfaceImpl implements EmpleadoCliInterface {
                 return;
             }
 
-            empleado.setDni(inputReader.updateValue(empleado.getDni()));
-            empleado.setNombre(inputReader.updateValue(empleado.getNombre()));
-            empleado.setApellido(inputReader.updateValue(empleado.getApellido()));
-            empleado.setEmail(inputReader.updateValue(empleado.getEmail()));
-            empleado.setFechaIngreso(LocalDate.parse(inputReader.updateValue(empleado.getFechaIngreso().toString())));
-            empleado.setArea(inputReader.updateValue(empleado.getArea()));
+            empleado.setDni(this.inputReader.updateValue(empleado.getDni()));
+            empleado.setNombre(this.inputReader.updateValue(empleado.getNombre()));
+            empleado.setApellido(this.inputReader.updateValue(empleado.getApellido()));
+            empleado.setEmail(this.inputReader.updateValue(empleado.getEmail()));
+            empleado.setFechaIngreso(LocalDate.parse(this.inputReader.updateValue(empleado.getFechaIngreso().toString())));
+            empleado.setArea(this.inputReader.updateValue(empleado.getArea()));
 
             empleadoService.update(empleado);
             this.logger.println("✅ Empleado actualizado correctamente.");

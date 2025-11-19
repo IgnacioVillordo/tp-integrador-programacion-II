@@ -52,6 +52,12 @@ public class LegajoServiceImpl implements LegajoService {
         return this.legajoDao.getById(id);
     }
 
+    @Override
+    public Legajo buscarPorNroLegajo(String nroLegajo) throws Exception {
+        this.validateStringNotEmpty(nroLegajo);
+        return this.legajoDao.buscarPorNroLegajo(nroLegajo);
+    }
+
     private void validateEntity(Legajo entity) throws Exception {
         if (entity.getId() <= 0)
             throw new IllegalArgumentException("Id invalido");
@@ -70,5 +76,10 @@ public class LegajoServiceImpl implements LegajoService {
     private void validateIntegerId(int id) throws Exception {
         if (id <= 0)
             throw new IllegalArgumentException("El id no debe ser un numero negativo");
+    }
+
+    private void validateStringNotEmpty(String value) throws Exception {
+        if (value.isEmpty())
+            throw new IllegalArgumentException("No puede ser una cadena vacia");
     }
 }

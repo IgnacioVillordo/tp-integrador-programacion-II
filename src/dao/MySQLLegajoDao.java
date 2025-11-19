@@ -135,4 +135,24 @@ public class MySQLLegajoDao implements LegajoDao {
             return legajos;
         }
     }
+
+    @Override
+    public Legajo buscarPorNroLegajo(String nroLegajo) throws SQLException {
+        String sql = "SELECT * FROM legajos WHERE nroLegajo=?";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nroLegajo);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Legajo(
+                        rs.getInt("id"),
+                        rs.getString("nroLegajo"),
+                        rs.getString("categoria"),
+                        Estado.valueOf(rs.getString("estado")),
+                        rs.getDate("fechaAlta").toLocalDate(),
+                        rs.getString("observaciones")
+                );
+            }
+        }
+        return null;
+    }
 }

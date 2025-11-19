@@ -43,6 +43,8 @@ public class Legajo {
     public void setId(int id) {
         if (id <= 0)
             throw new IllegalArgumentException("Id invalido");
+        if (this.id > 0)
+            throw new IllegalArgumentException("El id no se puede modificar");
         this.id = id;
     }
 
