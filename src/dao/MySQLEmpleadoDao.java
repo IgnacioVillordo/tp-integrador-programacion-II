@@ -184,5 +184,6 @@ public class MySQLEmpleadoDao implements EmpleadoDao {
                 );
             }
         }
+        return null;
     }
 }

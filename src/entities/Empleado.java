@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 public class Empleado {
     private int id;
-
     private String dni; // NOT NULL, UNIQUE, máx. 15
     private String nombre; // NOT NULL, máx. 80
     private String apellido; // NOT NULL, máx. 80
@@ -30,6 +29,32 @@ public class Empleado {
         this.setFechaIngreso(fechaIngreso);
         this.setArea(area);
         this.setEliminado(eliminado);
+    }
+
+    public Empleado(
+            int id,
+            String dni,
+            String nombre,
+            String apellido,
+            String email,
+            LocalDate fechaIngreso,
+            String area,
+            boolean eliminado
+    ) {
+        this.setId(id);
+        this.setDni(dni);
+        this.setNombre(nombre);
+        this.setApellido(apellido);
+        this.setEmail(email);
+        this.setFechaIngreso(fechaIngreso);
+        this.setArea(area);
+        this.setEliminado(eliminado);
+    }
+
+    public void setId(int id) {
+        if (id <= 0)
+            throw new IllegalArgumentException("Id invalido");
+        this.id = id;
     }
 
     public void setEliminado(boolean eliminado) {

@@ -2,5 +2,5 @@ package dao;
 
 import entities.Legajo;
 
-public interface LegajoDao extends GenericDao<Legajo>{
+public interface LegajoDao extends GenericDao<Legajo> {
 }

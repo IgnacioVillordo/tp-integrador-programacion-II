@@ -16,19 +16,19 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     @Override
     public void save(Empleado entity) throws Exception {
         this.validateEntity(entity);
-        empleadoDao.save(entity);
+        this.empleadoDao.save(entity);
     }
 
     @Override
     public void update(Empleado entity) throws Exception {
         this.validateEntity(entity);
-        empleadoDao.update(entity);
+        this.empleadoDao.update(entity);
     }
 
     @Override
     public void delete(int id) throws Exception {
         this.validateIntegerId(id);
-        empleadoDao.delete(id);
+        this.empleadoDao.delete(id);
     }
 
     @Override
@@ -49,17 +49,17 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     @Override
     public Empleado getById(int id) throws Exception {
         this.validateIntegerId(id);
-        return empleadoDao.getById(id);
+        return this.empleadoDao.getById(id);
     }
 
     @Override
     public List<Empleado> getAll() throws Exception {
-        return empleadoDao.getAll();
+        return this.empleadoDao.getAll();
     }
 
     @Override
     public Empleado buscarPorDni(String dni) throws Exception {
-        return empleadoDao.buscarPorDni(dni);
+        return this.empleadoDao.buscarPorDni(dni);
     }
 
     private void validateEntity(Empleado entity) throws Exception {

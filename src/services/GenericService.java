@@ -10,5 +10,4 @@ public interface GenericService<T> {
     void updateTx(T entity) throws Exception;
     void delteTx(T entity) throws Exception;
     T getById(int id) throws Exception;
-    List<T> getAll() throws Exception;
 }

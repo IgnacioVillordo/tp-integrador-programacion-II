@@ -3,11 +3,28 @@ package entities;
 import java.time.LocalDate;
 
 public class Legajo {
+    private int id;
     private String nroLegajo; // NOT NULL, UNIQUE, máx. 20
     private String categoria; // máx. 30
     private Estado estado; // NOT NULL
     private LocalDate fechaAlta;
     private String observaciones; // máx. 255
+
+    public Legajo(
+            int id,
+            String nroLegajo,
+            String categoria,
+            Estado estado,
+            LocalDate fechaAlta,
+            String observaciones
+    ) {
+        this.setId(id);
+        this.setNroLegajo(nroLegajo);
+        this.setCategoria(categoria);
+        this.setEstado(estado);
+        this.setFechaAlta(fechaAlta);
+        this.setObservaciones(observaciones);
+    }
 
     public Legajo(
             String nroLegajo,
@@ -21,6 +38,12 @@ public class Legajo {
         this.setEstado(estado);
         this.setFechaAlta(fechaAlta);
         this.setObservaciones(observaciones);
+    }
+
+    public void setId(int id) {
+        if (id <= 0)
+            throw new IllegalArgumentException("Id invalido");
+        this.id = id;
     }
 
     public void setNroLegajo(String nroLegajo) {
@@ -40,20 +63,20 @@ public class Legajo {
     }
 
     public void setEstado(Estado estado) {
-    if (estado != null) {
-        this.estado = estado;
-        return; 
+        if (estado != null) {
+            this.estado = estado;
+            return;
+        }
+        throw new IllegalArgumentException("Estado invalido");
     }
-    throw new IllegalArgumentException("Estado invalido");
-}
 
-public void setFechaAlta(LocalDate fechaAlta) {
-    if (fechaAlta != null && !fechaAlta.isAfter(LocalDate.now())) {
-        this.fechaAlta = fechaAlta;
-        return;
+    public void setFechaAlta(LocalDate fechaAlta) {
+        if (fechaAlta != null && !fechaAlta.isAfter(LocalDate.now())) {
+            this.fechaAlta = fechaAlta;
+            return;
+        }
+        throw new IllegalArgumentException("La fecha no puede ser futura ni nula");
     }
-    throw new IllegalArgumentException("La fecha no puede ser futura ni nula");
-}
 
     public void setObservaciones(String observaciones) {
         if (observaciones.length() <= 255) {
@@ -72,6 +95,10 @@ public void setFechaAlta(LocalDate fechaAlta) {
                 "  fechaAlta=" + fechaAlta + ",\n" +
                 "  observaciones='" + observaciones + '\'' + ",\n" +
                 '}';
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getNroLegajo() {

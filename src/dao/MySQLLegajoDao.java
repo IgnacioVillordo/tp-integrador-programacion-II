@@ -105,6 +105,7 @@ public class MySQLLegajoDao implements LegajoDao {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new Legajo(
+                        rs.getInt("id"),
                         rs.getString("nroLegajo"),
                         rs.getString("categoria"),
                         Estado.valueOf(rs.getString("estado")),
