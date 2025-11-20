@@ -8,7 +8,7 @@ public class Legajo {
     private String categoria; // máx. 30
     private Estado estado; // NOT NULL
     private LocalDate fechaAlta;
-    private String observaciones; // máx. 255
+    private String observaciones = ""; // máx. 255
 
     public Legajo(
             int id,
@@ -81,6 +81,10 @@ public class Legajo {
     }
 
     public void setObservaciones(String observaciones) {
+        if (observaciones == null) {
+            this.observaciones = "";
+        }
+
         if (observaciones.length() <= 255) {
             this.observaciones = observaciones;
             return;

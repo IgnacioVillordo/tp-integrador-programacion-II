@@ -47,8 +47,7 @@ public class AppMenuCliInterfaceImpl implements AppMenuCliInterface {
             this.logger.println("4. Buscar empleado por ID");
             this.logger.println("5. Buscar empleado por DNI");
             this.logger.println("6. Setear Legajo");
-            this.logger.println("7. Obtener Legajo por ID de Empleado");
-            this.logger.println("8. Ver todos");
+            this.logger.println("7. Ver todos");
             this.logger.println("0. Volver al menú principal");
             this.logger.print("Seleccione una opción: ");
             this.option = readOption();
@@ -60,8 +59,7 @@ public class AppMenuCliInterfaceImpl implements AppMenuCliInterface {
                 case 4 -> this.empleadoCliInterface.buscarPorId();
                 case 5 -> this.empleadoCliInterface.buscar();
                 case 6 -> this.empleadoCliInterface.setLegajo();
-                case 7 -> this.empleadoCliInterface.obtenerLegajo();
-                case 8 -> this.empleadoCliInterface.listar();
+                case 7 -> this.empleadoCliInterface.listar();
                 case 0 -> this.logger.println("Volviendo al menú principal...");
                 default -> this.logger.println("Opción inválida.");
             }

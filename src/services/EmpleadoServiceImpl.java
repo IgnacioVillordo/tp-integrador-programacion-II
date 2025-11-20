@@ -82,24 +82,6 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     }
 
     @Override
-    public Legajo getLegajo(int id_empleado) throws Exception {
-        this.validateIntegerId(id_empleado);
-        try {
-            Legajo legajo = null;
-            this.transaccionManager.begin();
-            Empleado empleado = this.empleadoDao.getById(id_empleado);
-            legajo = this.legajoDao.getById(empleado.getLegajo().getId());
-            this.transaccionManager.commit();
-            return legajo;
-        } catch (Exception e) {
-            this.transaccionManager.rollback();
-            throw new RuntimeException(e);
-        }
-
-    }
-
-
-    @Override
     public Empleado buscarPorDni(String dni) throws Exception {
         return this.empleadoDao.buscarPorDni(dni);
     }

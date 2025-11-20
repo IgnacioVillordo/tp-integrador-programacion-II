@@ -101,23 +101,6 @@ public class EmpleadoCliInterfaceImpl implements EmpleadoCliInterface {
     }
 
     @Override
-    public void obtenerLegajo() {
-        try {
-            this.logger.print("Ingrese el ID del empleado al cual le quiere obtener su Legajo: ");
-            int id = Integer.parseInt(this.inputReader.read());
-            Empleado empleado = empleadoService.getById(id);
-
-            if (empleado == null)
-                throw new Exception("No se encontro el Empleado con el id " + empleado.getId());
-
-            Legajo legajo = this.empleadoService.getLegajo(id);
-            this.logger.print(legajo);
-        } catch (Exception e) {
-            this.logger.println("❌ Error al obtener el Legajo: " + e.getMessage());
-        }
-    }
-
-    @Override
     public void listar() {
         try {
             List<Empleado> empleados = this.empleadoService.getAll();

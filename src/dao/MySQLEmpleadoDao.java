@@ -2,6 +2,7 @@ package dao;
 
 import config.DatabaseConnection;
 import entities.Empleado;
+import entities.Estado;
 import entities.Legajo;
 
 import java.sql.*;
@@ -104,21 +105,49 @@ public class MySQLEmpleadoDao implements EmpleadoDao {
 
     @Override
     public Empleado getById(int id) throws SQLException {
-        String sql = "SELECT * FROM empleados WHERE id=?";
-        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Empleado(
-                        rs.getInt("id"),
-                        rs.getString("dni"),
-                        rs.getString("nombre"),
-                        rs.getString("apellido"),
-                        rs.getString("email"),
-                        rs.getDate("fechaIngreso").toLocalDate(),
-                        rs.getString("area"),
-                        rs.getBoolean("eliminado")
+        String sqlEmpleado = "SELECT * FROM empleados WHERE id=?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmtEmp = conn.prepareStatement(sqlEmpleado)) {
+
+            stmtEmp.setInt(1, id);
+            ResultSet rsEmp = stmtEmp.executeQuery();
+
+            if (rsEmp.next()) {
+                int idLegajo = rsEmp.getInt("id_legajo");
+
+                Legajo legajo = null;
+                if (idLegajo != 0) {
+                    String sqlLegajo = "SELECT * FROM legajos WHERE id=?";
+                    try (PreparedStatement stmtLeg = conn.prepareStatement(sqlLegajo)) {
+                        stmtLeg.setInt(1, idLegajo);
+                        ResultSet rsLeg = stmtLeg.executeQuery();
+
+                        if (rsLeg.next()) {
+                            legajo = new Legajo(
+                                    rsLeg.getInt("id"),
+                                    rsLeg.getString("nroLegajo"),
+                                    rsLeg.getString("categoria"),
+                                    Estado.valueOf(rsLeg.getString("estado")),
+                                    rsLeg.getDate("fechaAlta").toLocalDate(),
+                                    rsLeg.getString("observaciones")
+                            );
+                        }
+                    }
+                }
+
+                Empleado empleado = new Empleado(
+                        rsEmp.getInt("id"),
+                        rsEmp.getString("dni"),
+                        rsEmp.getString("nombre"),
+                        rsEmp.getString("apellido"),
+                        rsEmp.getString("email"),
+                        rsEmp.getDate("fechaIngreso").toLocalDate(),
+                        rsEmp.getString("area"),
+                        rsEmp.getBoolean("eliminado")
                 );
+
+                empleado.setLegajo(legajo);
+                return empleado;
             }
         }
         return null;
