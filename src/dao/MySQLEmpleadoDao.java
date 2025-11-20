@@ -50,9 +50,10 @@ public class MySQLEmpleadoDao implements EmpleadoDao {
 
     @Override
     public void delete(int id) throws SQLException {
-        String sql = "UPDATE empleados SET eliminado=TRUE WHERE id=?";
+        String sql = "UPDATE empleados SET eliminado=1 WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
+            stmt.executeUpdate();
         }
     }
 
@@ -124,12 +125,13 @@ public class MySQLEmpleadoDao implements EmpleadoDao {
 
     @Override
     public List<Empleado> getAll() throws SQLException {
-        String sql = "SELECT id, dni, nombre, apellido, email, fechaIngreso, area FROM empleados WHERE eliminado <> TRUE";
+        String sql = "SELECT id, dni, nombre, apellido, email, fechaIngreso, area, eliminado FROM empleados WHERE eliminado = 0";
         List<Empleado> empleados = new ArrayList<>();
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery();) {
             while (rs.next()) {
                 empleados.add(
                         new Empleado(
+                                rs.getInt("id"),
                                 rs.getString("dni"),
                                 rs.getString("nombre"),
                                 rs.getString("apellido"),
@@ -168,7 +170,7 @@ public class MySQLEmpleadoDao implements EmpleadoDao {
 
     @Override
     public Empleado buscarPorDni(String dni) throws SQLException {
-        String sql = "SELECT id, dni, nombre, apellido, email, fechaIngreso, area FROM empleados WHERE dni=?";
+        String sql = "SELECT id, dni, nombre, apellido, email, fechaIngreso, area, eliminado FROM empleados WHERE dni=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setString(1, dni);
             ResultSet rs = stmt.executeQuery();

@@ -67,9 +67,9 @@ public class LegajoCliInterfaceImpl implements LegajoCliInterface {
                 return;
             }
 
-            legajo.setNroLegajo(this.inputReader.updateValue(legajo.getNroLegajo()));
-            legajo.setCategoria(this.inputReader.updateValue(legajo.getCategoria()));
-            legajo.setObservaciones(this.inputReader.updateValue(legajo.getCategoria()));
+            legajo.setNroLegajo(this.inputReader.updateValue(legajo.getNroLegajo(), "Numero de Legajo"));
+            legajo.setCategoria(this.inputReader.updateValue(legajo.getCategoria(), "Categoria"));
+            legajo.setObservaciones(this.inputReader.updateValue(legajo.getCategoria(), "Observaciones"));
             Estado nuevoEstado = null;
             while (nuevoEstado == null) {
                 try {

@@ -62,6 +62,7 @@ public class AppMenuCliInterfaceImpl implements AppMenuCliInterface {
                 default -> this.logger.println("Opción inválida.");
             }
         } while (this.option != 0);
+        this.option = -1;
     }
 
     private void menuLegajos() {
@@ -84,6 +85,7 @@ public class AppMenuCliInterfaceImpl implements AppMenuCliInterface {
                 default -> this.logger.println("Opción inválida.");
             }
         } while (this.option != 0);
+        this.option = -1;
     }
 
     private int readOption () {

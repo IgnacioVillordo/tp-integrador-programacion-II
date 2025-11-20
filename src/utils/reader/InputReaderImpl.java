@@ -37,7 +37,7 @@ public class InputReaderImpl implements InputReader {
         this.logger.print("Nuevo valor (Enter para mantener): ");
         String newValue = scanner.nextLine();
 
-        if (newValue.isBlank()) {
+        if (newValue.trim().isBlank()) {
             newValue = currentValue;
         }
         return newValue;

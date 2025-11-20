@@ -65,18 +65,18 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     private void validateEntity(Empleado entity) throws Exception {
         if (entity.getId() < 0)
             throw new IllegalArgumentException("El id no puede ser un nùmero negativo");
-        if (entity.getDni().trim().isEmpty() || entity.getDni() == null || entity.getDni().length() <= 16)
+        if (entity.getDni().trim().isEmpty() || entity.getDni() == null || entity.getDni().length() > 16)
             throw new IllegalArgumentException("El dni no puede estar vacìo");
-        if (entity.getNombre().trim().isEmpty() || entity.getNombre() == null || entity.getNombre().length() <= 80)
+        if (entity.getNombre().trim().isEmpty() || entity.getNombre() == null || entity.getNombre().length() > 80)
             throw new IllegalArgumentException("El nombre no puede estar vacìo");
-        if (entity.getApellido().trim().isEmpty() || entity.getApellido() == null || entity.getNombre().length() <= 80)
+        if (entity.getApellido().trim().isEmpty() || entity.getApellido() == null || entity.getNombre().length() > 80)
             throw new IllegalArgumentException("El apellido no puede estar vacìo");
-        if (entity.getEmail().trim().isEmpty() || !entity.getApellido().contains("@") || !entity.getEmail().contains(".") || entity.getEmail().length() <= 120)
+        if (entity.getEmail().trim().isEmpty() || !entity.getEmail().contains("@") || !entity.getEmail().contains(".") || entity.getEmail().length() > 120)
             throw new IllegalArgumentException("El email no puede estar vacìo, o debe contener @");
         if (entity.getFechaIngreso() == null || entity.getFechaIngreso().isAfter(LocalDate.now()) || entity.getFechaIngreso().equals(""))
             throw new IllegalArgumentException("La fecha de ingreso no puede estar vacia o ser anterior a la fecha actual");
-        if (entity.getArea() == null || entity.getArea().isEmpty() || entity.getArea().length() <= 50)
-            throw new IllegalArgumentException("La fecha de ingreso no puede estar vacia o ser anterior a la fecha actual");
+        if (entity.getArea() == null || entity.getArea().isEmpty() || entity.getArea().length() > 50)
+            throw new IllegalArgumentException("La longitud del texto del area no debe ser mayor a 50 caracteres");
     }
 
     private void validateIntegerId(int id) throws Exception {

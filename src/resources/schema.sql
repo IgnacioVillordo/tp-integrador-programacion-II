@@ -17,13 +17,16 @@ CREATE TABLE legajos
     observaciones VARCHAR(255)
 );
 
+CREATE INDEX idx_legajos_nroLegajo
+ON legajos (nroLegajo);
+
 DROP TABLE IF EXISTS empleados;
 
 -- Creación tabla empleados
 CREATE TABLE empleados
 (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    dni          VARCHAR(15)  NOT NULL,
+    dni          VARCHAR(15)  NOT NULL UNIQUE,
     nombre       VARCHAR(80)  NOT NULL,
     apellido     VARCHAR(80)  NOT NULL,
     email        VARCHAR(120) NOT NULL,
@@ -34,3 +37,9 @@ CREATE TABLE empleados
 
     FOREIGN KEY (id_legajo) REFERENCES legajos (id)
 );
+
+CREATE INDEX idx_empleados_dni
+ON empleados (dni);
+
+SHOW INDEX FROM empleados;
+SHOW INDEX FROM legajos;
