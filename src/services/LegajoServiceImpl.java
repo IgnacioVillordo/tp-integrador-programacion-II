@@ -1,7 +1,6 @@
 package services;
 
 import dao.LegajoDao;
-import entities.Empleado;
 import entities.Legajo;
 
 import java.time.LocalDate;

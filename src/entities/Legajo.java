@@ -100,26 +100,26 @@ public class Legajo {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public String getNroLegajo() {
-        return nroLegajo;
+        return this.nroLegajo;
     }
 
     public String getCategoria() {
-        return categoria;
+        return this.categoria;
     }
 
     public Estado getEstado() {
-        return estado;
+        return this.estado;
     }
 
     public LocalDate getFechaAlta() {
-        return fechaAlta;
+        return this.fechaAlta;
     }
 
     public String getObservaciones() {
-        return observaciones;
+        return this.observaciones;
     }
 }

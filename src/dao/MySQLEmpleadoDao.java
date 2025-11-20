@@ -110,6 +110,7 @@ public class MySQLEmpleadoDao implements EmpleadoDao {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new Empleado(
+                        rs.getInt("id"),
                         rs.getString("dni"),
                         rs.getString("nombre"),
                         rs.getString("apellido"),
@@ -147,13 +148,13 @@ public class MySQLEmpleadoDao implements EmpleadoDao {
     }
 
     @Override
-    public void setLegajo(int id_empleado, Legajo legajo) throws SQLException {
-        String sql = "UPDATE empleados SET id_legajo=? WHERE id_empleado=?";
+    public void setLegajo(int id_empleado, int id_legajo) throws SQLException {
+        String sql = "UPDATE empleados SET id_legajo=? WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, legajo.getNroLegajo());
+            stmt.setInt(1, id_legajo);
             stmt.setInt(2, id_empleado);
 
-            stmt.executeQuery();
+            stmt.executeUpdate();
         }
     }
 
@@ -164,7 +165,7 @@ public class MySQLEmpleadoDao implements EmpleadoDao {
             stmt.setString(1, legajo.getNroLegajo());
             stmt.setInt(2, id_empleado);
 
-            stmt.executeQuery();
+            stmt.executeUpdate();
         }
     }
 

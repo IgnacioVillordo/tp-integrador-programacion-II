@@ -1,11 +1,16 @@
 package adapters.cli;
 
 import entities.Empleado;
+import entities.Estado;
+import entities.Legajo;
 import services.EmpleadoService;
+import services.LegajoService;
 import utils.logger.Logger;
 import utils.reader.InputReader;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class EmpleadoCliInterfaceImpl implements EmpleadoCliInterface {
@@ -46,12 +51,70 @@ public class EmpleadoCliInterfaceImpl implements EmpleadoCliInterface {
 
     @Override
     public void setLegajo() {
+        try {
+            this.logger.print("Ingrese el ID del empleado al cual le quiere setear su Legajo: ");
+            int id = Integer.parseInt(this.inputReader.read());
+            Empleado empleado = empleadoService.getById(id);
 
+            if (empleado == null)
+                throw new Exception("No se encontro el Empleado con el id " + empleado.getId());
+
+            this.logger.print("Numero de Legajo: ");
+            String nroLegajo = this.inputReader.read();
+
+            this.logger.print("Categoria: ");
+            String categoria = this.inputReader.read();
+
+            Estado estado = null;
+            while (estado == null) {
+                this.logger.print("Estado (ACTIVO/INACTIVO): ");
+                String estadoStr = this.inputReader.read().trim().toUpperCase();
+                try {
+                    estado = Estado.valueOf(estadoStr);
+                } catch (IllegalArgumentException e) {
+                    this.logger.println("⚠️ Valor inválido. Ingrese ACTIVO o INACTIVO.");
+                }
+            }
+
+            LocalDate fechaAlta = null;
+            DateTimeFormatter fmt = DateTimeFormatter.ISO_LOCAL_DATE;
+            while (fechaAlta == null) {
+                this.logger.print("Fecha de alta (YYYY-MM-DD): ");
+                String fechaStr = this.inputReader.read().trim();
+                try {
+                    fechaAlta = LocalDate.parse(fechaStr, fmt);
+                } catch (DateTimeParseException e) {
+                    this.logger.println("⚠️ Formato inválido. Ingrese en formato YYYY-MM-DD (ej: 2025-11-13).");
+                }
+            }
+
+            this.logger.print("Observaciones: ");
+            String observaciones = this.inputReader.read();
+
+            Legajo legajo = new Legajo(nroLegajo, categoria, estado, fechaAlta, observaciones);
+
+            this.empleadoService.setLegajo(empleado.getId(), legajo);
+            this.logger.println("✅ Legajo seteado al Empleado con ID " + id);
+        } catch (Exception e) {
+            this.logger.println("❌ Error al setear Legajo al Empleado: " + e.getMessage());
+        }
     }
 
     @Override
     public void obtenerLegajo() {
+        try {
+            this.logger.print("Ingrese el ID del empleado al cual le quiere obtener su Legajo: ");
+            int id = Integer.parseInt(this.inputReader.read());
+            Empleado empleado = empleadoService.getById(id);
 
+            if (empleado == null)
+                throw new Exception("No se encontro el Empleado con el id " + empleado.getId());
+
+            Legajo legajo = this.empleadoService.getLegajo(id);
+            this.logger.print(legajo);
+        } catch (Exception e) {
+            this.logger.println("❌ Error al obtener el Legajo: " + e.getMessage());
+        }
     }
 
     @Override

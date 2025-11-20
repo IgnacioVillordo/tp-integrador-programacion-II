@@ -4,10 +4,7 @@ import config.DatabaseConnection;
 import entities.Estado;
 import entities.Legajo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +13,7 @@ public class MySQLLegajoDao implements LegajoDao {
     @Override
     public Optional<Integer> save(Legajo entity) throws SQLException {
         String sql = "INSERT INTO legajos (nroLegajo, categoria, estado, fechaAlta, observaciones) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, entity.getNroLegajo());
             stmt.setString(2, entity.getCategoria());
             stmt.setString(3, entity.getEstado().name());

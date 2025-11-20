@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS legajos;
 -- Creación tabla legajos
 CREATE TABLE legajos
 (
-    id            INT NOT NULL PRIMARY KEY,
+    id            INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nroLegajo     VARCHAR(20) NOT NULL,
     categoria     VARCHAR(30) NOT NULL,
     estado        ENUM ('ACTIVO','INACTIVO') NOT NULL,

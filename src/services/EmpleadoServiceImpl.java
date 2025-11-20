@@ -1,16 +1,24 @@
 package services;
 
+import config.TransaccionManager;
 import dao.EmpleadoDao;
+import dao.LegajoDao;
 import entities.Empleado;
+import entities.Legajo;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class EmpleadoServiceImpl implements EmpleadoService {
     private final EmpleadoDao empleadoDao;
+    private final LegajoDao legajoDao;
+    private final TransaccionManager transaccionManager;
 
-    public EmpleadoServiceImpl(EmpleadoDao empleadoDao) {
+    public EmpleadoServiceImpl(EmpleadoDao empleadoDao, LegajoDao legajoDao, TransaccionManager transaccionManager) {
         this.empleadoDao = empleadoDao;
+        this.legajoDao = legajoDao;
+        this.transaccionManager = transaccionManager;
     }
 
     @Override
@@ -56,6 +64,40 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     public List<Empleado> getAll() throws Exception {
         return this.empleadoDao.getAll();
     }
+
+    @Override
+    public void setLegajo(int id_empleado, Legajo legajo) throws Exception {
+        try {
+            this.transaccionManager.begin();
+            Optional<Integer> id_legajo = this.legajoDao.save(legajo);
+            if (!id_legajo.isPresent()) {
+                throw new Exception("No se pudo guardar el Legajo numero: " + legajo.getNroLegajo());
+            }
+            this.empleadoDao.setLegajo(id_empleado, id_legajo.get());
+            this.transaccionManager.commit();
+        } catch (Exception e) {
+            this.transaccionManager.rollback();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Legajo getLegajo(int id_empleado) throws Exception {
+        this.validateIntegerId(id_empleado);
+        try {
+            Legajo legajo = null;
+            this.transaccionManager.begin();
+            Empleado empleado = this.empleadoDao.getById(id_empleado);
+            legajo = this.legajoDao.getById(empleado.getLegajo().getId());
+            this.transaccionManager.commit();
+            return legajo;
+        } catch (Exception e) {
+            this.transaccionManager.rollback();
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
     @Override
     public Empleado buscarPorDni(String dni) throws Exception {
